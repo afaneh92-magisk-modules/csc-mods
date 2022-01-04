@@ -30,23 +30,23 @@ add_csc_feature() {
   feature=$1
   value=$2
   lineNumber=0
-  lineNumber=`sed -n "/<${feature}>.*<\/${feature}>/=" $MODPATH/$omc_path/cscfeature.xml`
+  lineNumber=`sed -n "/<${feature}>.*<\/${feature}>/=" $MODPATH/$i`
   if [ $lineNumber > 0 ] ; then
-    echo "- Found feature $feature in line $lineNumber and changing it to ${value} in $omc_path/cscfeature.xml"
-    sed -i "${lineNumber} c<${feature}>${value}<\/${feature}>" $MODPATH/$omc_path/cscfeature.xml
+    echo "- Found feature $feature in line $lineNumber and changing it to ${value} in $i"
+    sed -i "${lineNumber} c<${feature}>${value}<\/${feature}>" $MODPATH/$i
   else
-    echo "- Adding feature $feature to the feature set in $omc_path/cscfeature.xml"
-    sed -i "/<\/FeatureSet>/i \   \ <${feature}>${value}<\/${feature}>" $MODPATH/$omc_path/cscfeature.xml
+    echo "- Adding feature $feature to the feature set in $i"
+    sed -i "/<\/FeatureSet>/i \   \ <${feature}>${value}<\/${feature}>" $MODPATH/$i
   fi
 }
 
 # Paths
 omc_path=`getprop persist.sys.omc_path`
-original_files=`find $omc_path -type f -name '*.xml'`
+original_files=`find $omc_path -type f -name 'cscfeature.xml'`
 omc_etcpath=`getprop persist.sys.omc_etcpath`
 
 # Your script starts here
-ui_print "- copy omc files"
+ui_print "- Copy omc files"
 mkdir -p $MODPATH/$omc_path
 cp -aR $omc_path/* $MODPATH/$omc_path
 ui_print "- Start decodeing..."
@@ -55,26 +55,59 @@ for i in $original_files; do
     ui_print "- Not decoded $i!"
   else
     ui_print "- Successfully decoded $i!"
+    # Add CSC Features
+    add_csc_feature CscFeature_RIL_SupportEsim TRUE
+    add_csc_feature CscFeature_SystemUI_SupportRecentAppProtection TRUE
+    add_csc_feature CscFeature_SmartManager_ConfigSubFeatures applock
+    add_csc_feature CscFeature_VoiceCall_ConfigRecording RecordingAllowed
+    add_csc_feature CscFeature_Setting_SupportRealTimeNetworkSpeed TRUE
+    add_csc_feature CscFeature_Common_ConfigSvcProviderForUnknownNumber whitepages,whitepages,whitepages
+    add_csc_feature CscFeature_VoiceCall_ConfigOpStyleForCallerId ECID,ERI
+    add_csc_feature CscFeature_Message_EnableSaveVMessage TRUE
+    add_csc_feature CscFeature_Message_EnableBlackList TRUE
+    add_csc_feature CscFeature_Setting_EnableMenuBlockCallMsg TRUE
+    add_csc_feature CscFeature_Common_ConfigSamsungCloudVariation TRUE
+    add_csc_feature CscFeature_Setting_ConfigMobileHotspotProvisionApp FALSE
+    add_csc_feature CscFeature_Framework_ConfigOpSetupWizard Global
+    add_csc_feature CscFeature_SetupWizard_ConfigStepSequenceType VanillaStep
+    add_csc_feature CscFeature_Setting_ConfigOpMenuStructure Global
+    add_csc_feature CscFeature_SystemUI_ConfigDefQuickSettingItem Wifi,SilentMode,SoundMode,WindowsLink,Bluetooth,NightMode,FocusMode,Intent,ColorInversion,Ebook,Routines,InstantSession,RotationLock,PowerShare,Flashlight,QRScanner,AirplaneMode,PowerSaving,MobileData,WifiCalling,Performance,BlueLightFilter,WifiHotspot,Hotspot,PersonalMode,SecureFolder,Location,Nfc,Aod,AllShareCast,ShareLive,DeviceVisibility,Dnd,Sync,UDS,BikeMode,PowerPlanning,EdgeLighting,FloatingMessage,RedPacket,DormantMode,NetworkBooster,QuickConnect,SmartStay,SmartPause,AirView,AirBrowse,Toolbox,CarMode,UltraPowerSaving,SFinder,ScreenCapture,ScreenRecorder,VoLte,Dolby,BatteryMode,DailyBoard,DesktopMode,SpenRemote,KidsHome,GrxScreenOnTime,GrxScreenRecord,GrxMultiAction,GrxRecovery
+    add_csc_feature CscFeature_Camera_ShutterSoundMenu TRUE
+    add_csc_feature CscFeature_SystemUI_SupportDataUsageViewOnQuickPanel TRUE
+    add_csc_feature CscFeature_Camera_EnableCameraDuringCall TRUE
+    add_csc_feature CscFeature_Message_EnableSaveRestoreSDCard TRUE
+    add_csc_feature CscFeature_Message_EnableFontSize TRUE
+    add_csc_feature CscFeature_Setting_EnableMenuNetworkMode TRUE
+    add_csc_feature CscFeature_Setting_EnableDataRoamingButtonInQuickPanel TRUE
+    add_csc_feature CscFeature_Setting_SupportWifiCall TRUE
+    add_csc_feature CscFeature_Setting_SupportWiFiCallingMenu TRUE
+    add_csc_feature CscFeature_Setting_DisableMenuSoftwareUpdate TRUE
+    add_csc_feature CscFeature_Setting_EnableRoamingMenu TRUE
+    add_csc_feature CscFeature_Setting_EnableDataRoamingMenuInDetail TRUE
+    add_csc_feature CscFeature_Setting_EnableMenuDownloadContents TRUE
+    add_csc_feature CscFeature_Settings_EnableUSM TRUE
+    add_csc_feature CscFeature_Camera_CameraFlicker 60hz
+    add_csc_feature CscFeature_Camera_EnableSmsNotiPopup TRUE
+    add_csc_feature CscFeature_Camcorder_DoNotPauseMusic TRUE
+    add_csc_feature CscFeature_Camera_CamcorderDoNotPauseMusic TRUE
+    add_csc_feature CscFeature_Camera_CamcorderEnablePromptPopupToSelectRecMode TRUE
+    add_csc_feature CscFeature_Common_AllowExternalApkUsage TRUE
+    add_csc_feature CscFeature_VoiceCall_EnableGroupCallMenu TRUE
+    add_csc_feature CscFeature_NFC_DefStatus OFF
+    add_csc_feature CscFeature_VoiceCall_ConfigOpStyleForMobileNetSetting voltesettingscommon,checknonvoltesim,voltesettingOPS
+    add_csc_feature CscFeature_Framework_SupportDataModeSwitchGlobalAction TRUE
+    add_csc_feature CscFeature_IMS_EnableVoLTE TRUE
+    add_csc_feature CscFeature_MyFiles_SupportApkCategory TRUE
+    add_csc_feature CscFeature_MyFiles_SupportFolderDescription TRUE
+    add_csc_feature CscFeature_Music_SupportPlaybackDuringCall TRUE
+    add_csc_feature CscFeature_Wifi_SupportAdvancedMenu TRUE
+    add_csc_feature CscFeature_Gallery_SupportVideoCallCrop TRUE
+    add_csc_feature CscFeature_Setting_EnableHwVersionDisplay TRUE
+    add_csc_feature CscFeature_SystemUI_SupportPowerOffLock TRUE
   fi
 done
 
-add_csc_feature CscFeature_RIL_SupportEsim TRUE
-add_csc_feature CscFeature_SystemUI_SupportRecentAppProtection TRUE
-add_csc_feature CscFeature_SmartManager_ConfigSubFeatures applock
-add_csc_feature CscFeature_VoiceCall_ConfigRecording RecordingAllowed
-add_csc_feature CscFeature_Setting_SupportRealTimeNetworkSpeed TRUE
-add_csc_feature CscFeature_Common_ConfigSvcProviderForUnknownNumber whitepages,whitepages,whitepages
-add_csc_feature CscFeature_VoiceCall_ConfigOpStyleForCallerId ECID,ERI
-add_csc_feature CscFeature_Message_EnableSaveVMessage TRUE
-add_csc_feature CscFeature_Message_EnableBlackList TRUE
-add_csc_feature CscFeature_Setting_EnableMenuBlockCallMsg TRUE
-add_csc_feature CscFeature_Common_ConfigSamsungCloudVariation TRUE
-add_csc_feature CscFeature_Setting_ConfigMobileHotspotProvisionApp FALSE
-add_csc_feature CscFeature_Framework_ConfigOpSetupWizard Global
-add_csc_feature CscFeature_SetupWizard_ConfigStepSequenceType VanillaStep
-add_csc_feature CscFeature_Setting_ConfigOpMenuStructure Global
-add_csc_feature CscFeature_SystemUI_ConfigDefQuickSettingItem Wifi,SilentMode,SoundMode,WindowsLink,Bluetooth,NightMode,FocusMode,Intent,ColorInversion,Ebook,Routines,InstantSession,RotationLock,PowerShare,Flashlight,QRScanner,AirplaneMode,PowerSaving,MobileData,WifiCalling,Performance,BlueLightFilter,WifiHotspot,Hotspot,PersonalMode,SecureFolder,Location,Nfc,Aod,AllShareCast,ShareLive,DeviceVisibility,Dnd,Sync,UDS,BikeMode,PowerPlanning,EdgeLighting,FloatingMessage,RedPacket,DormantMode,NetworkBooster,QuickConnect,SmartStay,SmartPause,AirView,AirBrowse,Toolbox,CarMode,UltraPowerSaving,SFinder,ScreenCapture,ScreenRecorder,VoLte,Dolby,BatteryMode,DailyBoard,DesktopMode,SpenRemote,KidsHome,GrxScreenOnTime,GrxScreenRecord,GrxMultiAction,GrxRecovery
-
+# Change Module OMC Path
 sed -i "s~omc\_path~$omc_path~g" $MODPATH/post-fs-data.sh;
 
 # Extract AppLock
