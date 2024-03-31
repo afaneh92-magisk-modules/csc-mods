@@ -109,6 +109,8 @@ for i in $original_files; do
     add_csc_feature CscFeature_Gallery_SupportVideoCallCrop TRUE
     add_csc_feature CscFeature_Setting_EnableHwVersionDisplay TRUE
     add_csc_feature CscFeature_SystemUI_SupportPowerOffLock TRUE
+    add_csc_feature CscFeature_Message_EnableMmsErrorCodeInDetailView TRUE
+    add_csc_feature CscFeature_Message_EnablePhoneNumberFormattingInMsg TRUE
   fi
 done
 
@@ -120,6 +122,7 @@ unzip -o "$ZIPFILE" "system/*" -d "$MODPATH" >&2;
 mkdir -p $MODPATH/$omc_etcpath
 cp -aR $omc_etcpath/* $MODPATH/$omc_etcpath
 sed -i "s/AppLock\.apk/AppLock\.apk\.bak/g" $MODPATH/$omc_etcpath/enforceskippingpackages.txt;
+sed -i "s/AdvancedCalling\.apk/AdvancedCalling\.apk\.bak/g" $MODPATH/$omc_etcpath/enforceskippingpackages.txt;
 sed -i "s~omc\_etcpath~$omc_etcpath~g" $MODPATH/post-fs-data.sh;
 
 # Set executable permissions
